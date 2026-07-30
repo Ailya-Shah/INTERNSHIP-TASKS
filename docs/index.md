@@ -84,7 +84,7 @@ The rule shows only a marginal edge at K=20 and none at K=50/AUC — expected fo
 | **Logistic Regression** | 0.45 | 0.50 | **0.561** | **0.589** |
 | Random Forest | 0.45 | 0.52 | 0.516 | 0.545 |
 
-![Standardized signal strength — Logistic Regression coefficients, ranked by magnitude](https://raw.githubusercontent.com/Ailya-Shah/INTERNSHIP-TASKS/main/work/outputs/figures/signal_importance.png)
+![Standardized signal strength — Logistic Regression coefficients, ranked by magnitude](https://raw.githubusercontent.com/Ailya-Shah/INTERNSHIP-TASKS/main/work/notebooks/work/outputs/figures/signal_importance.png)
 
 *Figure 1. Signal strength and direction, read directly from the fitted Logistic Regression's standardized coefficients (generated in `capstone.ipynb`, "Interpretation — signal directions"). `word_count` and `content_age_days` point negative (shorter/newer → higher page-one odds); `backlinks` points positive, as expected.*
 
@@ -111,7 +111,7 @@ Precision@20/@50 are noisy point estimates at this held-out size (only 8 clients
 
 The model produces three tiers: **8,747 OPPORTUNITY** pages (not yet page-one, high model score — review first), **18,199 PROTECT** pages (already page-one, high score — monitor, don't disturb), and **26,946 LOW_PRIORITY** pages. Each OPPORTUNITY pick carries a reason code (`strong_backlinks`, `real_demand`, `concise_content`, `recently_published`) built directly from the confirmed signal directions above, so an editor sees *why* a page was flagged, not just a bare score.
 
-**Top of the queue** — the actual first 5 rows of `work/outputs/action_playbook.csv`, pseudonymous IDs only:
+**Top of the queue** — the actual first 5 rows of `work/notebooks/work/outputs/action_playbook.csv`, pseudonymous IDs only:
 
 | Rank | Content ID | Client ID | Model score | Reason code(s) | Word count | Backlinks |
 |---|---|---|---|---|---|---|
@@ -141,7 +141,7 @@ Then open, in order, `work/notebooks/w01_research_question.ipynb` through `capst
 
 **Sealed holdout status:** June 2026 (`fact_content_daily_performance_sample.parquet`) has not been touched by any modeling or label-logic decision in this project — it remains available as a genuinely blind future test, should that be pursued beyond this capstone.
 
-**Key outputs on disk (checkable, not just claimed):** `work/outputs/action_playbook.csv` (the ranked OPPORTUNITY queue), `work/outputs/tier_counts.csv`, `work/outputs/baseline_action_score.csv`, `work/outputs/figures/signal_importance.png` — all confirmed present and non-empty as of the final capstone notebook run.
+**Key outputs on disk (checkable, not just claimed):** `work/notebooks/work/outputs/action_playbook.csv` (the ranked OPPORTUNITY queue), `work/notebooks/work/outputs/tier_counts.csv`, `work/notebooks/work/outputs/baseline_action_score.csv`, `work/notebooks/work/outputs/figures/signal_importance.png` — all confirmed present and non-empty as of the final capstone notebook run. *(Note: all four land under `work/notebooks/work/outputs/` rather than `work/outputs/`, since the notebook writes them relative to its own working directory — worth normalizing in a future cleanup pass, but not touched here since nothing is broken, just nested deeper than intended.)*
 
 ## 9. Acknowledgments & data credit
 
