@@ -84,7 +84,7 @@ The rule shows only a marginal edge at K=20 and none at K=50/AUC — expected fo
 | **Logistic Regression** | 0.45 | 0.50 | **0.561** | **0.589** |
 | Random Forest | 0.45 | 0.52 | 0.516 | 0.545 |
 
-![Standardized signal strength — Logistic Regression coefficients, ranked by magnitude](work/outputs/figures/signal_importance.png)
+![Standardized signal strength — Logistic Regression coefficients, ranked by magnitude](https://raw.githubusercontent.com/Ailya-Shah/INTERNSHIP-TASKS/main/work/outputs/figures/signal_importance.png)
 
 *Figure 1. Signal strength and direction, read directly from the fitted Logistic Regression's standardized coefficients (generated in `capstone.ipynb`, "Interpretation — signal directions"). `word_count` and `content_age_days` point negative (shorter/newer → higher page-one odds); `backlinks` points positive, as expected.*
 
