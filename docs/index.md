@@ -5,13 +5,6 @@
 - **Repo:** https://github.com/Ailya-Shah/INTERNSHIP-TASKS
 - **Date:** July 2026
 
-> Copy this file to `work/capstone_report.md` and fill it in as you build. Sections 1–8
-> mirror the Pass / Needs-Work rubric axes, so nothing here is optional. Sections 0 and 9
-> are **paper sections**: your deployed research paper must carry both, and they're here so
-> you never rebuild them from memory at ship time.
-
-> **Mapping to the capstone's required paper sections:** Introduction/Problem statement = Section 1; Data = Section 2; Methodology = Sections 3–4 (baseline + model/features) plus the split design in Section 5; Results = Section 5; Limitations & honest framing = the dedicated section below; Ranked recommendations = Section 7; Reproducibility = Section 8; Acknowledgments & data credit = Section 9.
-
 ## 0. Abstract
 
 Which observable content and query-demand signals are associated with a page reaching page-one search visibility, and can a simple learned model rank likely page-one pages better than a transparent rule? Using one mid-panel month (March 2026) of FlyRank's pseudonymized search-performance warehouse — 53,892 published pages across 31 clients — I built five leakage-checked features (word count, content age, search demand, competition, backlinks) and compared a hand-written rule baseline against Logistic Regression and Random Forest, validated with a client-grouped split so no client's pages leaked between train and test. Logistic Regression showed the best honest performance (ROC AUC 0.561, Average Precision 0.589, versus the rule baseline's 0.479/0.523), and its coefficients confirmed two counter-intuitive signals independently found in exploratory analysis: shorter, newer content associates with higher page-one odds, while backlinks and search demand push the expected positive direction. The output is a reason-coded action queue of 8,747 opportunity pages an editor can review first, each carrying the specific signals that earned it a spot on the list. That queue comes with explicit caveats attached rather than hidden: an 8-client held-out validation group and a 43% share of top recommendations resting on likely-missing rather than genuinely-zero demand data.

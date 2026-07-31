@@ -5,12 +5,6 @@
 - **Repo:** https://github.com/Ailya-Shah/INTERNSHIP-TASKS
 - **Date:** July 2026
 
-> Copy this file to `work/capstone_report.md` and fill it in as you build. Sections 1–8
-> mirror the Pass / Needs-Work rubric axes, so nothing here is optional. Sections 0 and 9
-> are **paper sections**: your deployed research paper must carry both, and they're here so
-> you never rebuild them from memory at ship time.
-
-> **Mapping to the capstone's required paper sections:** Introduction/Problem statement = Section 1; Data = Section 2; Methodology = Sections 3–4 (baseline + model/features) plus the split design in Section 5; Results = Section 5; Limitations & honest framing = the dedicated section below; Ranked recommendations = Section 7; Reproducibility = Section 8; Acknowledgments & data credit = Section 9.
 
 ## 0. Abstract
 
