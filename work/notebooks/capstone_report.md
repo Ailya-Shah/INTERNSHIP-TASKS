@@ -10,6 +10,8 @@
 > are **paper sections**: your deployed research paper must carry both, and they're here so
 > you never rebuild them from memory at ship time.
 
+> **Mapping to the capstone's required paper sections:** Introduction/Problem statement = Section 1; Data = Section 2; Methodology = Sections 3–4 (baseline + model/features) plus the split design in Section 5; Results = Section 5; Limitations & honest framing = the dedicated section below; Ranked recommendations = Section 7; Reproducibility = Section 8; Acknowledgments & data credit = Section 9.
+
 ## 0. Abstract
 
 Which observable content and query-demand signals are associated with a page reaching page-one search visibility, and can a simple learned model rank likely page-one pages better than a transparent rule? Using one mid-panel month (March 2026) of FlyRank's pseudonymized search-performance warehouse — 53,892 published pages across 31 clients — I built five leakage-checked features (word count, content age, search demand, competition, backlinks) and compared a hand-written rule baseline against Logistic Regression and Random Forest, validated with a client-grouped split so no client's pages leaked between train and test. Logistic Regression showed the best honest performance (ROC AUC 0.561, Average Precision 0.589, versus the rule baseline's 0.479/0.523), and its coefficients confirmed two counter-intuitive signals independently found in exploratory analysis: shorter, newer content associates with higher page-one odds, while backlinks and search demand push the expected positive direction. The output is a reason-coded action queue of 8,747 opportunity pages an editor can review first, each carrying the specific signals that earned it a spot on the list. That queue comes with explicit caveats attached rather than hidden: an 8-client held-out validation group and a 43% share of top recommendations resting on likely-missing rather than genuinely-zero demand data.
@@ -84,7 +86,7 @@ The rule shows only a marginal edge at K=20 and none at K=50/AUC — expected fo
 | **Logistic Regression** | 0.45 | 0.50 | **0.561** | **0.589** |
 | Random Forest | 0.45 | 0.52 | 0.516 | 0.545 |
 
-![Standardized signal strength — Logistic Regression coefficients, ranked by magnitude](work/outputs/figures/signal_importance.png)
+![Standardized signal strength — Logistic Regression coefficients, ranked by magnitude](https://raw.githubusercontent.com/Ailya-Shah/INTERNSHIP-TASKS/main/work/notebooks/work/outputs/figures/signal_importance.png)
 
 *Figure 1. Signal strength and direction, read directly from the fitted Logistic Regression's standardized coefficients (generated in `capstone.ipynb`, "Interpretation — signal directions"). `word_count` and `content_age_days` point negative (shorter/newer → higher page-one odds); `backlinks` points positive, as expected.*
 
@@ -107,11 +109,21 @@ Precision@20/@50 are noisy point estimates at this held-out size (only 8 clients
 
 **A surprising negative result:** the staleness assumption behind FlyRank's own product flags — "older, un-updated content performs worse" — held only at the extreme tail (the stalest quartile showed a meaningfully lower page-one rate, 48.7%, versus a flat ~58–59% across the other three quartiles). A smooth "the older, the worse" story is not supported; only "very stale" behaves differently.
 
+## Limitations & Honest Framing
+
+- **One month, one portfolio.** These results describe March 2026 for one company's client set — not shown to generalize to other months, seasons, or organizations.
+- **A small held-out validation group.** Only 8 clients (4,049 pages) back the honest performance numbers reported in Sections 3 and 5 — real, but statistically thin. Precision@K point estimates especially should be read as directional, not precise (they swing considerably even between reruns of the identical pipeline, since DuckDB does not guarantee row order across query executions).
+- **Associational, not causal.** Every result here is an observed, cross-sectional pattern. Nothing here supports "doing X will cause Y" — only "pages with X are, in this data, more often page-one."
+- **A meaningful share of recommendations rest on missing, not measured, data.** Roughly 43% of OPPORTUNITY-tier pages (3,730 of 8,747) have zero recorded `search_volume` and zero `backlinks` simultaneously — very likely missing keyword/backlink data, not confirmed zero-demand pages.
+- **The model can react strongly to extreme values.** Row 3 in Section 7's queue (a 109-word page, zero backlinks, still scoring 0.831) illustrates this directly — a very short page can score highly almost entirely from one coefficient, which is exactly why a human read stays part of the workflow, not just the score.
+- **Query-mix signals are excluded, not resolved.** `fact_content_query_90d` showed the largest leakage gap of anything tested (+0.171 AUC) and was excluded rather than fixed — a genuinely useful signal source is left on the table until its window-alignment against the label period can be verified precisely.
+- **No claims of proving Google's ranking algorithm or a causal refresh effect are made anywhere in this work** — every finding is stated as observed, measured, or decision-support, per the claims checklist below.
+
 ## 7. Recommendation
 
 The model produces three tiers: **8,747 OPPORTUNITY** pages (not yet page-one, high model score — review first), **18,199 PROTECT** pages (already page-one, high score — monitor, don't disturb), and **26,946 LOW_PRIORITY** pages. Each OPPORTUNITY pick carries a reason code (`strong_backlinks`, `real_demand`, `concise_content`, `recently_published`) built directly from the confirmed signal directions above, so an editor sees *why* a page was flagged, not just a bare score.
 
-**Top of the queue** — the actual first 5 rows of `work/outputs/action_playbook.csv`, pseudonymous IDs only:
+**Top of the queue** — the actual first 5 rows of `work/notebooks/work/outputs/action_playbook.csv`, pseudonymous IDs only:
 
 | Rank | Content ID | Client ID | Model score | Reason code(s) | Word count | Backlinks |
 |---|---|---|---|---|---|---|
@@ -141,7 +153,7 @@ Then open, in order, `work/notebooks/w01_research_question.ipynb` through `capst
 
 **Sealed holdout status:** June 2026 (`fact_content_daily_performance_sample.parquet`) has not been touched by any modeling or label-logic decision in this project — it remains available as a genuinely blind future test, should that be pursued beyond this capstone.
 
-**Key outputs on disk (checkable, not just claimed):** `work/outputs/action_playbook.csv` (the ranked OPPORTUNITY queue), `work/outputs/tier_counts.csv`, `work/outputs/baseline_action_score.csv`, `work/outputs/figures/signal_importance.png` — all confirmed present and non-empty as of the final capstone notebook run.
+**Key outputs on disk (checkable, not just claimed):** `work/notebooks/work/outputs/action_playbook.csv` (the ranked OPPORTUNITY queue), `work/notebooks/work/outputs/tier_counts.csv`, `work/notebooks/work/outputs/baseline_action_score.csv`, `work/notebooks/work/outputs/figures/signal_importance.png` — all confirmed present and non-empty as of the final capstone notebook run. *(Note: all four land under `work/notebooks/work/outputs/` rather than `work/outputs/`, since the notebook writes them relative to its own working directory — worth normalizing in a future cleanup pass, but not touched here since nothing is broken, just nested deeper than intended.)*
 
 ## 9. Acknowledgments & data credit
 
